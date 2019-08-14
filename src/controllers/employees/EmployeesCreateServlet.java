@@ -45,12 +45,13 @@ public class EmployeesCreateServlet extends HttpServlet {
 
             e.setCode(request.getParameter("code"));
             e.setName(request.getParameter("name"));
+
+            //第一引数 [request.getParameter("password")]と第二引数[リスナーで設定したsaltの値]を
+            //getPasswordEncrypt()メソッドで暗号化
             e.setPassword(
-                    EncryptUtil.getPasswordEncrypt(
-                            request.getParameter("password"),
-                            (String)this.getServletContext().getAttribute("salt")
-                            )
-                    );
+                    EncryptUtil.getPasswordEncrypt(request.getParameter("password"),
+                            (String)this.getServletContext().getAttribute("salt")));
+
             e.setAdmin_flag(Integer.parseInt(request.getParameter("admin_flag")));
 
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
