@@ -15,7 +15,7 @@
 <%--データを参照して、入力内容の初期値として表示する --%>
 
 <label for="name">氏名</label><br />
-<input type="text" name="name" value="${omployee.name}" />
+<input type="text" name="name" value="${employee.name}" />
 <br />
 <br />
 
