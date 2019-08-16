@@ -28,6 +28,12 @@ public class TopPageIndexServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        // ログイン後のTOPページにフラッシュメッセージを表示する
+        if(request.getSession().getAttribute("flush") != null) {
+            request.setAttribute("flush", request.getSession().getAttribute("flush"));  // セッションスコープからリクエストスコープに格納場所を移動
+            request.getSession().removeAttribute("flush");      //セッションスコープの中を空にする
+        }
         RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/topPage/index.jsp");
         rd.forward(request, response);
     }

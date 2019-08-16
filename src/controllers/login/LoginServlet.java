@@ -75,10 +75,11 @@ public class LoginServlet extends HttpServlet {
             //
             try {
                 e = em.createNamedQuery("checkLoginCodeAndPassword", Employee.class)
-                        .setParameter("code", code)
-                        .setParameter("pass", password)
+                        .setParameter("code", code)     //:codeにcodeを設定
+                        .setParameter("pass", password)     //:passにpasswordを設定
                         .getSingleResult();
-            } catch(NoResultException ex){}
+            } catch(NoResultException ex){
+            }
 
             em.close();
 
