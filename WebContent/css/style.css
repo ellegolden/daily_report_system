@@ -145,9 +145,8 @@ table#report_list .report_name {
     width: 20%;
     padding: 10px 2%;
 }
-
 table#report_list .report_date {
-    width: 20px;
+    width: 20%;
 }
 
 table#report_list .report_title {

@@ -40,7 +40,7 @@ public class ReportsIndexServlet extends HttpServlet {
         int page;
         try {
             page = Integer.parseInt(request.getParameter("page"));
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             page =1;
         } //初回はcatchを拾って44行目の page = 1が入る
 

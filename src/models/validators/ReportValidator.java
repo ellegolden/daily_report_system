@@ -33,12 +33,9 @@ public class ReportValidator {
 
     private static String _validateContent(String content) {
         if(content == null || content.equals("")){
-            return "タイトルを入力してください。";
+            return "内容を入力してください。";
         }
 
         return "";
     }
-
-
-
 }
