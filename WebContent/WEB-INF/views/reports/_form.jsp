@@ -21,7 +21,7 @@
 <br />
 
 <label for="title">タイトル</label><br />
-<input type="text" name="title=" value="${report.title}" />
+<input type="text" name="title" value="${report.title}" />
 <br />
 <br />
 
