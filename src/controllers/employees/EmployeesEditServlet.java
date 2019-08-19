@@ -39,11 +39,11 @@ public class EmployeesEditServlet extends HttpServlet {
 
         em.close();
 
-        //社員情報とセッションIDをリクエストスコープに登録
+        // 社員情報とセッションIDをリクエストスコープに登録
         request.setAttribute("employee", e);
         request.setAttribute("_token", request.getSession().getId());
 
-        //メッセージIDをセッションスコープに登録
+        // 該当の社員のIDをセッションスコープに登録
         request.getSession().setAttribute("employee_id", e.getId());
 
 

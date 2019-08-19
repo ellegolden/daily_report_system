@@ -40,15 +40,15 @@ public class LoginServlet extends HttpServlet {
         request.setAttribute("_token", request.getSession().getId());
         request.setAttribute("hasError", false);
 
-        /* フラッシュメッセージがセッションスコープにセットされていたら
-        リクエストスコープに保存する。(セッションスコープからは削除) */
+        // フラッシュメッセージがセッションスコープにセットされていたら
+        // リクエストスコープ(flush)に保存する。(セッションスコープからは削除)
         if(request.getSession().getAttribute("flush") != null) {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/login/login.jsp");
-        rd.forward(request, response);
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/login/login.jsp");  //遷移するページをlogin.jspに設定
+        rd.forward(request, response);//設定したlogin.jspに遷移
     }
 
     /**
@@ -59,10 +59,10 @@ public class LoginServlet extends HttpServlet {
         // 認証結果を格納する変数
         Boolean check_result = false;
 
-        String code = request.getParameter("code");
-        String plain_pass = request.getParameter("password");
+        String code = request.getParameter("code");     //①
+        String plain_pass = request.getParameter("password");   //②
 
-        Employee e = null;
+        Employee e = null;  //③
 
         //codeとplain_passに値が入っていればEntyityManagerを実行し、「password」に暗号化したパスを入れる
         if(code != null && !code.equals("") && plain_pass != null && !plain_pass.equals("")) {
@@ -72,7 +72,10 @@ public class LoginServlet extends HttpServlet {
                     (String)this.getServletContext().getAttribute("salt"));
 
             // 社員番号とパスワードが正しいかチェックする
-            //
+            // :codeと:passに①と②で持ってきたデータをセットし
+            // .getSingleResult();で指定した社員のデータを1件だけ取得する
+            // データが違うと例外が発生し、cacthで何も指定しないので、
+            // ③で設定したのnullのまま④へ入る
             try {
                 e = em.createNamedQuery("checkLoginCodeAndPassword", Employee.class)
                         .setParameter("code", code)     //:codeにcodeを設定
@@ -83,26 +86,28 @@ public class LoginServlet extends HttpServlet {
 
             em.close();
 
-            // 認証結果が
+            // ④ try-cacthを抜けてが無事データが入っていればtrueを返す
             if(e != null) {
                 check_result = true;
 
             }
         }
 
-        if(!check_result) {
+        if(!check_result) {     //eがnullのままだとデフォルトのfalseがはいりtrueになる
             // 認証できなかったらログイン画面に戻る
-            request.setAttribute("_token", request.getSession().getId());
-            request.setAttribute("hasError", true);
+            request.setAttribute("_token", request.getSession().getId());   //現在のセッションIDをリクエストスコープに送る
+            request.setAttribute("hasError", true);     // JSP側でフラッシュメッセージを表示するため、trueを"hasError"という名前でセットし、JSP側からメッセージを呼び出す
             request.setAttribute("code", code);
 
             RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/login/login.jsp");
             rd.forward(request, response);
 
-        } else {
-            //認証出来たらログイン状態にしてトップページへリダイレクト
+        } else {    //認証出来たらログイン状態にしてトップページへリダイレクト
+
+            // eに格納した社員データをlogin_employeeの名前でセッションスコープにセット
             request.getSession().setAttribute("login_employee", e);
 
+            // セッションスコープにフラッシュメッセージをセットしトップページへリダイレクト
             request.getSession().setAttribute("flush", "ログインしました");
             response.sendRedirect(request.getContextPath() + "/");
 

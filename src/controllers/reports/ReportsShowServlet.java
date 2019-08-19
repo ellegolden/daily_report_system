@@ -35,12 +35,12 @@ public class ReportsShowServlet extends HttpServlet {
         // TODO Auto-generated method stub
         EntityManager em = DBUtil.createEntityManager();
 
-        //該当のIDのメッセージ1件のみをデータベースから取得
+        //該当のIDの日報データ1件のみをデータベースから取得
         Report r = em.find(Report.class, Integer.parseInt(request.getParameter("id")));
 
         em.close();
 
-        //メッセージデータをリクエストスコープにセットしてshow.jspを呼び出す
+        //日報データをリクエストスコープにセットしてshow.jspを呼び出す
         request.setAttribute("report", r);
         request.setAttribute("_token", request.getSession().getId());
 

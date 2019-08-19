@@ -11,6 +11,11 @@
                     <c:import url="_form.jsp" />
                 </form>
 
+                <%-- href="#"でページのトップ(一番上)に移動する
+                  -- confirmDestroyでメッセージの削除のダイアログを表示した後に、
+                  -- キャンセルなどを選択した後、ページトップに移動する  --%>
+
+                  <%-- onclick属性で、クリック際に「confirmDestroy()」を呼び出す --%>
                 <p><a href="#" onclick="confirmDestroy();">この従業員情報を削除する</a></p>
                 <form method="POST" action="<c:url value='/employees/destroy' />">
                     <input type="hidden" name="_token" value="${_token}" />

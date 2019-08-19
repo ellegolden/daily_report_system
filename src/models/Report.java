@@ -51,6 +51,7 @@ public class Report {
     @Column(name = "title", length = 255, nullable = false)
     private String title;
 
+    // @Lobを指定することで改行もデータベースに保存される
     @Lob
     @Column(name = "content", nullable = false)
     private String content;

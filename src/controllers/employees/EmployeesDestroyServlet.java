@@ -36,10 +36,12 @@ public class EmployeesDestroyServlet extends HttpServlet {
         if(_token != null && _token.equals(request.getSession().getId())){
             EntityManager em = DBUtil.createEntityManager();
 
-            /* セッションスコープに登録されたキー("message_id")からメッセージのIDを取得して
-             * 該当のIDのメッセージ1件のみをデータベースから取得 */
+            /* セッションスコープに登録されたキー("employee_id")からメッセージのIDを取得して
+             * 該当のIDの社員情報1件のみをデータベースから取得 */
             Employee e = em.find(Employee.class, (Integer)(request.getSession().getAttribute("employee_id")));
 
+            // 直接データベースのデータを消すわけではなく、
+            // setDelete_flag()に1を渡す事で削除した扱いにしてDB上にデータは残す
             e.setDelete_flag(1);
             e.setUpdated_at(new Timestamp(System.currentTimeMillis()));
 

@@ -15,18 +15,27 @@
                     <th>氏名</th>
                     <th>操作</th>
                 </tr>
+                <%-- EmployeeIndexServletでList<Employee>でセットしたemployeesを
+                  -- itemsにセットし、<c:forEach>で1件ずつ取り出す --%>
                 <c:forEach var="employee" items="${employees}">
+
+                <%-- 表が複数行ある時、奇数行と偶数行で違うクラス(tr.row1,tr.row0)
+                  -- とする事で、ストライプのように別の背景色のCSSを適用する  --%>
                     <tr class="row${status.count % 2}">
                         <td><c:out value="${employee.code}" /></td>
                         <td><c:out value="${employee.name}" /></td>
+
+                        <%--Delete_flag()が1であれば、削除済みを表示 --%>
                         <td><c:choose>
                                 <c:when test="${employee.delete_flag == 1}">
                                     (削除済み)
                                 </c:when>
+                                 <%--Delete_flag()が0であれば、/showへのリンクを表示 --%>
                                 <c:otherwise>
                                     <a href="<c:url value='/employees/show?id=${employee.id}' />">詳細を表示</a>
                                 </c:otherwise>
-                            </c:choose></td>
+                            </c:choose>
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>

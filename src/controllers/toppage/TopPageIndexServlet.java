@@ -46,7 +46,7 @@ public class TopPageIndexServlet extends HttpServlet {
             page = Integer.parseInt(request.getParameter("page"));
         } catch (Exception e) {
             page =1;
-        } //初回はcatchを拾って44行目の page = 1が入る
+        } //初回はcatchを拾って48行目の page = 1が入る
 
         //最大件数と開始位置を指定して日報を取得
         List<Report> reports = em.createNamedQuery("getMyAllReports", Report.class) //取ってくるデータの型を第2引数に指定

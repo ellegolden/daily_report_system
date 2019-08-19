@@ -49,14 +49,16 @@ public class LoginFilter implements Filter {
             Employee e = (Employee)session.getAttribute("login_employee");
 
             if(!servlet_path.equals("/login")) {      //ログイン画面以外について
-                //ログインしている状態であれば
+                //ログアウトしている状態であれば
                 //ログイン画面にリダイレクト
                 if(e == null) {
                     ((HttpServletResponse)response).sendRedirect(context_path + "/login");
                     return;
                 }
 
-                //従業員管理の機能は管理者のみが閲覧出来るようにする
+                // 従業員管理の機能は管理者のみが閲覧出来るようにする
+                // 従業員管理（/emploees）のページにアクセスした際、
+                // admin_flag の値が 0(従業員)ならトップページへリダイレクトさせる
                 if(servlet_path.matches("/employees.*") && e.getAdmin_flag() == 0) {
                     ((HttpServletResponse)response).sendRedirect(context_path + "/");
                     return;

@@ -36,12 +36,14 @@ public class EmployeesUpdateServlet extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //リクエストスコープからフォームに入力された"_token"を取得してString _tokenに代入
+        //フォームから入力された_tokenがセッションIDと同じであれば正規の処理に進む
         String _token = (String)request.getParameter("_token");
         if(_token != null && _token.equals(request.getSession().getId())){
             EntityManager em = DBUtil.createEntityManager();
 
-            /* セッションスコープに登録されたキー("message_id")からメッセージのIDを取得して
-             * 該当のIDのメッセージ1件のみをデータベースから取得 */
+            /* セッションスコープに登録されたキー("employee_id")から社員情報のIDを取得して
+             * 該当のIDの社員情報1件のみをデータベースから取得 */
             Employee e = em.find(Employee.class, (Integer)(request.getSession().getAttribute("employee_id")));
 
             // 現在の値と異なる社員番号が入力されていたら
@@ -74,7 +76,8 @@ public class EmployeesUpdateServlet extends HttpServlet {
             e.setUpdated_at(new Timestamp(System.currentTimeMillis()));
             e.setDelete_flag(0);
 
-            //バリデーションを実行してエラーがあったらeditに戻る
+            // バリデーションを実行(code_duplicate_checkとpassword_check_flagの引数にtrueを渡す)
+            // してエラーがあったらedit.jspに戻る
             List<String> errors = EmployeeValidator.validate(e, code_duplicate_check, password_check_flag);
             if(errors.size() > 0) {
                 em.close();

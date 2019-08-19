@@ -43,13 +43,13 @@ public class EmployeesIndexServlet extends HttpServlet {
         try {
             page = Integer.parseInt(request.getParameter("page"));
         } catch (NumberFormatException e) {
-        } //初回はここに来て40行目のint page = 1が入る
+        } //初回はここに来て42行目のint page = 1が入る
 
-        //最大件数と開始位置を指定してメッセージを取得
+        //最大件数と開始位置を指定して社員情報を取得
         List<Employee> employees = em.createNamedQuery("getAllEmployees", Employee.class) //取ってくるデータの型を第2引数に指定
                 .setFirstResult(15 * (page - 1)) //最初にデータを取る位置を指定
                 .setMaxResults(15) //setFirstResultから最大でどこまでデータを取るか指定
-                .getResultList(); //取ってきたデータをmessagesに代入
+                .getResultList(); //取ってきたデータをリスト(employees)に代入
 
         //全件数を取得
         long employees_count = (long) em.createNamedQuery("getEmployeesCount", Long.class) //countは数字を持ってくるのでlongを指定
@@ -57,12 +57,17 @@ public class EmployeesIndexServlet extends HttpServlet {
 
         em.close();
 
-        request.setAttribute("employees", employees);     //リスト(employees)の内容を"employees"に代入
-        request.setAttribute("employees_count", employees_count);     //カウントした全件数の数を"employees_count"に代入
+        request.setAttribute("employees", employees);     // リスト(employees)の内容をリクエストスコープ"employees"にセット
+        request.setAttribute("employees_count", employees_count);     // カウントした全件数の数をリクエストスコープ"employees_count"にセット
+
+        // 次回読み込みの際にページングの処理を行うため、現在のpageの値をリクエストスコープにセット
+        // ※ここで設定した値が"page = Integer.parseInt(request.getParameter("page"));"
+        // で読み込まれ50行目のページングの処理が行われる
         request.setAttribute("page", page);
 
-        /* フラッシュメッセージがセッションスコープにセットされていたら
-        リクエストスコープに保存する。(セッションスコープからは削除) */
+
+        // フラッシュメッセージがセッションスコープにセットされていたら
+        //リクエストスコープに保存する。(セッションスコープからは削除)
         if (request.getSession().getAttribute("flush") != null) {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");

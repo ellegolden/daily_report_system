@@ -5,6 +5,7 @@
 <c:import url="../layout/app.jsp">
     <c:param name="content">
         <c:choose>
+            <%-- 従業員情報がリクエストスコープにセットされているか --%>
             <c:when test="${employee != null}">
 
                  <h2>id ： ${employee.id} の従業員情報 詳細ページ</h2>

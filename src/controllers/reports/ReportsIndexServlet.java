@@ -44,7 +44,7 @@ public class ReportsIndexServlet extends HttpServlet {
             page =1;
         } //初回はcatchを拾って44行目の page = 1が入る
 
-        //最大件数と開始位置を指定してメッセージを取得
+        //最大件数と開始位置を指定して日報のデータを取得
         List<Report> reports = em.createNamedQuery("getAllReports", Report.class) //取ってくるデータの型を第2引数に指定
                 .setFirstResult(15 * (page - 1)) //最初にデータを取る位置を指定
                 .setMaxResults(15) //setFirstResultから最大でどこまでデータを取るか指定

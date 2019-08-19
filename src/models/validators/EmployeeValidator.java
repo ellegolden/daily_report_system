@@ -9,6 +9,8 @@ import models.Employee;
 import utils.DBUtil;
 
 public class EmployeeValidator {
+    // 第2引数にBoolean型の引数を用意し、そこが true であればパスワードの入力値チェック、
+    // および社員番号の重複チェックを行う
     public static List<String> validate(Employee e, Boolean code_duplicate_check_flag,Boolean password_check_flag) {
         List<String> errors = new ArrayList<String>();
 
