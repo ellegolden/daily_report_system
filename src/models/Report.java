@@ -41,6 +41,7 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    //1つのemployee_idを指定して、対応する社員(カラム)の情報をすべてemployeeに格納する
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
