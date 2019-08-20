@@ -25,7 +25,7 @@
 
                     <%-- ログイン中にheaderにフォロー中の社員のリンクを表示 --%>
                     <div id="follow_all">
-                        <a href="<c:url value='/follow_all' />">フォロー一覧</a>&nbsp;
+                        <a href="<c:url value='/follow' />">フォロー一覧</a>&nbsp;
                     </div>
                 </c:if>
                 </div>

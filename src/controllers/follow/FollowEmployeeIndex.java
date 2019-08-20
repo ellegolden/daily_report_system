@@ -1,8 +1,10 @@
 package controllers.follow;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,29 +33,32 @@ public class FollowEmployeeIndex extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        response.getWriter().append("Served at: ").append(request.getContextPath());
-    }
+        EntityManager em = DBUtil.createEntityManager();
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String _token = (String)request.getParameter("_token");
-        if(_token != null && _token.equals(request.getSession().getId())) {
-            EntityManager em = DBUtil.createEntityManager();
+        int page = 1;
+        try{
+            page = Integer.parseInt(request.getParameter("page"));
+        } catch(NumberFormatException e) { }
+        List<Employee> employees = em.createNamedQuery("getAllEmployees", Employee.class)
+                                     .setFirstResult(15 * (page - 1))
+                                     .setMaxResults(15)
+                                     .getResultList();
 
-            Employee e = em.find(Employee.class, (Integer)(request.getSession().getAttribute("employee_id")));
-            e.setfollow_flag(1);    // follow_flagに1が入る事でフォローしたとみなす
+        long employees_count = (long)em.createNamedQuery("getEmployeesCount", Long.class)
+                                       .getSingleResult();
 
-            em.getTransaction().begin();
-            em.getTransaction().commit();
-            em.close();
-            request.getSession().setAttribute("flush", "フォローしました。");
+        em.close();
 
-            response.sendRedirect(request.getContextPath() + "/employees/index");
+        request.setAttribute("employees", employees);
+        request.setAttribute("employees_count", employees_count);
+        request.setAttribute("page", page);
+        if(request.getSession().getAttribute("flush") != null) {
+            request.setAttribute("flush", request.getSession().getAttribute("flush"));
+            request.getSession().removeAttribute("flush");
         }
 
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/follow/index.jsp");
+        rd.forward(request, response);
     }
 
 }
