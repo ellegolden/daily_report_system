@@ -32,14 +32,14 @@
                         <tr>
                             <th>登録日時</th>
                             <td>
-                                <fmt:formatDate value="${employee.created_at}" pattern="yyyy-mm-dd:mm:ss"/>
+                                <fmt:formatDate value="${employee.created_at}" pattern="yyyy-MM-dd:mm:ss"/>
                             </td>
                         </tr>
 
                         <tr>
                             <th>更新日時</th>
                             <td>
-                            <fmt:formatDate value="${employee.created_at}" pattern="yyyy-mm-dd:mm:ss"/>
+                            <fmt:formatDate value="${employee.created_at}" pattern="yyyy-MM-dd:mm:ss"/>
                             </td>
                         </tr>
                     </tbody>
