@@ -22,13 +22,18 @@
                         <a href="<c:url value='/employees/index' />">従業員管理</a>&nbsp;
                     </c:if>
                     <a href="<c:url value='/reports/index' />">日報管理</a>&nbsp;
+
+                    <%-- ログイン中にheaderにフォロー中の社員のリンクを表示 --%>
+                    <div id="follow_all">
+                        <a href="<c:url value='/follow_all' />">フォロー一覧</a>&nbsp;
+                    </div>
                 </c:if>
                 </div>
-
                 <%-- ログイン中の"header"にはログインした社員の名前とログアウトのリンクを表示 --%>
                 <c:if test="${sessionScope.login_employee != null}">
+
                     <div id="employee_name">
-                        <c:out value="${sessionScope.login_employee.name}" />&nbsp;さん&nbsp;&nbsp;&nbsp;
+                        <c:out value="${sessionScope.login_employee.name}" />&nbsp;さん&nbsp;&nbsp;
                         <a href="<c:url value='/logout' />">ログアウト</a>
                     </div>
                 </c:if>
