@@ -36,7 +36,7 @@ public class FollowEmployeeCreate extends HttpServlet {
             EntityManager em = DBUtil.createEntityManager();
 
             Employee e = em.find(Employee.class, (Integer)(request.getSession().getAttribute("employee_id")));
-            e.setfollow_flag(1);    // follow_flagに1が入る事でフォローしたとみなす
+            e.setFollow_flag(1);    // follow_flagに1が入る事でフォローしたとみなす
 
             em.getTransaction().begin();
             em.getTransaction().commit();
