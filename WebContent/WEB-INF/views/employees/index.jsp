@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%-- employees/index.jsp --%>
 <c:import url="../layout/app.jsp">
     <c:param name="content">
         <c:if test="${flush != null}">
@@ -14,6 +15,7 @@
                     <th>社員番号</th>
                     <th>氏名</th>
                     <th>操作</th>
+                    <th>フォロー</th>
                 </tr>
                 <%-- EmployeeIndexServletでList<Employee>でセットしたemployeesを
                   -- itemsにセットし、<c:forEach>で1件ずつ取り出す --%>
@@ -24,12 +26,18 @@
                     <tr class="row${status.count % 2}">
                         <td><c:out value="${employee.code}" /></td>
                         <td><c:out value="${employee.name}" /></td>
-
-                        <%--Delete_flag()が1であれば、削除済みを表示 --%>
+                        <td>
+                            <form method="POST" action="<c:url value='/follow/update' />">
+                                <input type="hidden" name="follow_flag" value="1" />
+                                <button type="submit">フォロー</button>
+                            </form>
+                        </td>
                         <td><c:choose>
-                                <c:when test="${employee.delete_flag == 1}">
+                            <%--Delete_flag()が1であれば、削除済みを表示 --%>
+                            <c:when test="${employee.delete_flag == 1}">
                                     (削除済み)
                                 </c:when>
+
                                  <%--Delete_flag()が0であれば、/showへのリンクを表示 --%>
                                 <c:otherwise>
                                     <a href="<c:url value='/employees/show?id=${employee.id}' />">詳細を表示</a>

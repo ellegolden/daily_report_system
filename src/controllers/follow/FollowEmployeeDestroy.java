@@ -36,7 +36,7 @@ public class FollowEmployeeDestroy extends HttpServlet {
             EntityManager em = DBUtil.createEntityManager();
 
             Employee e = em.find(Employee.class, (Integer)(request.getSession().getAttribute("employee_id")));
-            e.setFollow_flag(0);
+            e.setFollow_flag(Integer.parseInt(request.getParameter("follow_flag")));
 
             em.getTransaction().begin();
             em.getTransaction().commit();

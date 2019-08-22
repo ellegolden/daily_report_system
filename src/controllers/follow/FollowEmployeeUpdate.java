@@ -15,14 +15,14 @@ import utils.DBUtil;
 /**
  * Servlet implementation class FollowEmployeeCreate
  */
-@WebServlet("/follow/create")
-public class FollowEmployeeCreate extends HttpServlet {
+@WebServlet("/follow/update")
+public class FollowEmployeeUpdate extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FollowEmployeeCreate() {
+    public FollowEmployeeUpdate() {
         super();
         // TODO Auto-generated constructor stub
     }
