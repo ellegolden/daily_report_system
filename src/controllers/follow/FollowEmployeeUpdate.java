@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Employee;
+import models.FollowFollower;
 import utils.DBUtil;
 
 /**
@@ -33,10 +34,16 @@ public class FollowEmployeeUpdate extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String _token = (String)request.getParameter("_token");
         if(_token != null && _token.equals(request.getSession().getId())) {
+
+            Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");    //ログイン情報を取得
+
             EntityManager em = DBUtil.createEntityManager();
 
-            Employee e = em.find(Employee.class, (Integer)(request.getSession().getAttribute("employee_id")));
-            e.setFollow_flag(1);    // follow_flagに1が入る事でフォローしたとみなす
+            Integer login_id = login_employee.getId();
+
+            FollowFollower f = em.find(FollowFollower.class, (Integer)(request.getSession().getAttribute("follow")));
+            f.setFollower(login_id);
+            f.setFollow((Integer)request.getAttribute(follow_id));
 
             em.getTransaction().begin();
             em.getTransaction().commit();

@@ -28,7 +28,7 @@
                         <td><c:out value="${employee.name}" /></td>
                         <td>
                             <form method="POST" action="<c:url value='/follow/update' />">
-                                <input type="hidden" name="follow_flag" value="1" />
+                                <input type="hidden" name="follow_id" value="${employee.id}" />
                                 <button type="submit">フォロー</button>
                             </form>
                         </td>
