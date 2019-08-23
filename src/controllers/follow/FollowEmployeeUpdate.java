@@ -35,15 +35,14 @@ public class FollowEmployeeUpdate extends HttpServlet {
         String _token = (String)request.getParameter("_token");
         if(_token != null && _token.equals(request.getSession().getId())) {
 
-            Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");    //ログイン情報を取得
-
             EntityManager em = DBUtil.createEntityManager();
 
-            Integer login_id = login_employee.getId();
+            Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");    //ログイン情報を取得
+            Employee follow_employee = em.find(Employee.class, request.getParameter("follow"));
 
             FollowFollower f = em.find(FollowFollower.class, (Integer)(request.getSession().getAttribute("follow")));
-            f.setFollower(login_id);
-            f.setFollow((Integer)request.getAttribute(follow_id));
+            f.setFollower(login_employee);
+            f.setFollow(follow_employee);
 
             em.getTransaction().begin();
             em.getTransaction().commit();

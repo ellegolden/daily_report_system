@@ -33,17 +33,20 @@ public class FollowEmployeeDestroy extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String _token = (String)request.getParameter("_token");
         if(_token != null && _token.equals(request.getSession().getId())) {
+
             EntityManager em = DBUtil.createEntityManager();
 
-            Employee e = em.find(Employee.class, (Integer)(request.getSession().getAttribute("employee_id")));
-            e.setFollow_flag(Integer.parseInt(request.getParameter("follow_flag")));
+            Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");    // ログイン情報を取得
+            Employee follow_employee = em.find(Employee.class, request.getParameter("follow"));        // ボタンから送信された情報を取得
 
             em.getTransaction().begin();
+            em.remove(login_employee);
+            em.remove(follow_employee);
             em.getTransaction().commit();
             em.close();
-            request.getSession().setAttribute("flush", "フォローを解除しました。");
+            request.getSession().setAttribute("flush", "フォローしました。");
 
-            response.sendRedirect(request.getContextPath() + "/follow/index");
+            response.sendRedirect(request.getContextPath() + "/employees/index");
         }
     }
 
