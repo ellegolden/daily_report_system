@@ -14,15 +14,20 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "follow_follower")
 @NamedQueries({
-    @NamedQuery(
-        name = "getMyAllFollows",
-        query = "SELECT f FROM FollowFollower AS f WHERE f.follower = :follow ORDER BY f.id DESC"
-        ),
-    @NamedQuery(
-        name = "getMyFollowsCount",
-        query = "SELECT COUNT(f) FROM FollowFollower AS f WHERE f.follower = :follower"
-        )
+        @NamedQuery(
+                name = "getMyAllFollows",
+                query = "SELECT f FROM FollowFollower AS f WHERE f.follower_employee = :follower ORDER BY f.id DESC"
+                ),
+        @NamedQuery(
+                name = "getMyFollowsCount",
+                query = "SELECT COUNT(f) FROM FollowFollower AS f WHERE f.follower_employee = :follower"
+                ),
+        @NamedQuery(
+                name = "getFollowFollower",
+                query = "SELECT f FROM FollowFollower AS f WHERE f.follower_employee = :follower AND f.follow_employee = :follow"
+                )
 })
+
 public class FollowFollower {
     @Id
     @Column(name = "id")
@@ -31,11 +36,11 @@ public class FollowFollower {
 
     @ManyToOne
     @JoinColumn(name = "follow_employee_id", nullable = false)
-    private Employee follow;
+    private Employee follow_employee;
 
     @ManyToOne
-    @JoinColumn(name = "follower_employee_id", nullable = false)
-    private Employee follower;
+    @JoinColumn(name = "follower_employe_id", nullable = false)
+    private Employee follower_employee;
 
     public Integer getId() {
         return id;
@@ -45,19 +50,19 @@ public class FollowFollower {
         this.id = id;
     }
 
-    public Employee getFollow() {
-        return follow;
+    public Employee getFollow_employee() {
+        return follow_employee;
     }
 
-    public void setFollow(Employee follow) {
-        this.follow = follow;
+    public void setFollow_employee(Employee follow_employee) {
+        this.follow_employee = follow_employee;
     }
 
-    public Employee getFollower() {
-        return follower;
+    public Employee getFollower_employee() {
+        return follower_employee;
     }
 
-    public void setFollower(Employee follower) {
-        this.follower = follower;
+    public void setFollower_employee(Employee follower_employee) {
+        this.follower_employee = follower_employee;
     }
- }
+}

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Employee;
+import models.FollowFollower;
 import utils.DBUtil;
 
 /**
@@ -36,18 +37,27 @@ public class FollowEmployeeDestroy extends HttpServlet {
 
             EntityManager em = DBUtil.createEntityManager();
 
-            Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");    // ログイン情報を取得
-            Employee follow_employee = em.find(Employee.class, request.getParameter("follow"));        // ボタンから送信された情報を取得
+            Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");
+
+            FollowFollower follow_data = (FollowFollower) em.createNamedQuery("getFollowFollower", FollowFollower.class)// follow_followerテーブルの情報を取得
+                    .setParameter("follower", login_employee)
+                    .setParameter("follow" ,em.find(Employee.class, Integer.parseInt(request.getParameter("unfollow_id"))))
+                    .getSingleResult();
+
 
             em.getTransaction().begin();
-            em.remove(login_employee);
-            em.remove(follow_employee);
+            em.remove(follow_data);     //テーブル内のデータを削除する
             em.getTransaction().commit();
             em.close();
-            request.getSession().setAttribute("flush", "フォローしました。");
 
-            response.sendRedirect(request.getContextPath() + "/employees/index");
+            request.getSession().setAttribute("flush", "フォローを解除しました。");
+
+            response.sendRedirect(request.getContextPath() + "/employees_all/index");
         }
     }
-
 }
+
+//Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");    // ログイン情報を取得
+//Employee follow_employee = em.find(Employee.class, request.getParameter("unfollow_id"));        // ボタンから送信された情報を取得
+
+//NamedQueryのselect where(login_employee+follow)- getshingleresult→ FollowFollower f→消す

@@ -4,7 +4,7 @@ body {
 }
 
 #header {
-    width: 1000px;
+    width: 1200px;
     height: 70px;
     background-color: #333333;
 }
@@ -114,13 +114,21 @@ tr.row0 {
 }
 
 #header_menu {
-    width: 550px;
+    width: 700px;
     padding-top: 17px;
     padding-left: 3%;
     display: inline-block;
 }
 
 #follow_all {
+    color:#cccccc;
+    width: 120px;
+    padding-right: 3%;
+    text-align: right;
+    display: inline-block;
+}
+
+#employees_all {
     color:#cccccc;
     width: 120px;
     padding-right: 3%;

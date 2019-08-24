@@ -1,6 +1,7 @@
-package controllers.employees;
+package controllers.employees_all;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,20 +12,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controllers.employees.FollowChk;
 import models.Employee;
+import models.FollowFollower;
 import utils.DBUtil;
 
 /**
- * Servlet implementation class EmployeesIndexServlet
+ * Servlet implementation class EmployeeAllIndexServlet
  */
-@WebServlet("/employees/index")
-public class EmployeesIndexServlet extends HttpServlet {
+@WebServlet("/employees_all/index")
+public class EmployeeAllIndexServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EmployeesIndexServlet() {
+    public EmployeeAllIndexServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,8 +35,7 @@ public class EmployeesIndexServlet extends HttpServlet {
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         //EntityManagerの起動
         EntityManager em = DBUtil.createEntityManager();
@@ -55,17 +57,35 @@ public class EmployeesIndexServlet extends HttpServlet {
         long employees_count = (long) em.createNamedQuery("getEmployeesCount", Long.class) //countは数字を持ってくるのでlongを指定
                 .getSingleResult();
 
+        // フォロー情報を回収して、フォローしているかのチェックを行う
+        Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");
+
+        List<FollowFollower> follow_check_flag = em.createNamedQuery("getMyAllFollows", FollowFollower.class)
+                .setParameter("follower", login_employee)
+                .getResultList();
+
         em.close();
 
-        request.setAttribute("employees", employees);     // リスト(employees)の内容をリクエストスコープ"employees"にセット
-        request.setAttribute("employees_count", employees_count);     // カウントした全件数の数をリクエストスコープ"employees_count"にセット
+        //フォローのチェック
+        List<FollowChk> followChks = new ArrayList<FollowChk>();
 
-        // 次回読み込みの際にページングの処理を行うため、現在のpageの値をリクエストスコープにセット
-        // ※ここで設定した値が"page = Integer.parseInt(request.getParameter("page"));"
-        // で読み込まれ50行目のページングの処理が行われる
+        for(Employee e: employees) {
+            FollowChk fc = new FollowChk();
+            fc.setEmp(e);
+
+            for(FollowFollower ff: follow_check_flag) {
+                if(e.getId() == ff.getFollow_employee().getId()) {
+                    fc.setChk(true);
+                    break;
+                }
+            }
+            followChks.add(fc);
+        }
+
+        request.setAttribute("followChks", followChks);     // リスト(employees)の内容をリクエストスコープ"employees"にセット
+        request.setAttribute("employees_count", employees_count);     // カウントした全件数の数をリクエストスコープ"employees_count"にセット
         request.setAttribute("page", page);
         request.setAttribute("_token", request.getSession().getId());
-
 
         // フラッシュメッセージがセッションスコープにセットされていたら
         //リクエストスコープに保存する。(セッションスコープからは削除)
@@ -74,10 +94,8 @@ public class EmployeesIndexServlet extends HttpServlet {
             request.getSession().removeAttribute("flush");
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees/index.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees_all/index.jsp");
         rd.forward(request, response);
-
     }
 
 }
-

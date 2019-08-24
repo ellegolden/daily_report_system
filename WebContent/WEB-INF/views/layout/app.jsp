@@ -23,6 +23,10 @@
                     </c:if>
                     <a href="<c:url value='/reports/index' />">日報管理</a>&nbsp;
 
+                    <%-- ログイン中にheaderに社員一覧のリンクを表示 --%>
+                    <div id=employees_all>
+                        <a href="<c:url value='/employees_all/index' />">社員一覧</a>&nbsp;
+                    </div>
                     <%-- ログイン中にheaderにフォロー中の社員のリンクを表示 --%>
                     <div id="follow_all">
                         <a href="<c:url value='/follow' />">フォロー一覧</a>&nbsp;
