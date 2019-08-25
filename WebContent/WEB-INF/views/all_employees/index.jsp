@@ -14,8 +14,8 @@
                 <tr>
                     <th>社員番号</th>
                     <th>氏名</th>
-                    <th>操作</th>
                     <th>フォロー</th>
+                    <th>操作</th>
                 </tr>
                 <%-- を
                   -- itemsにセットし、<c:forEach>で1件ずつ取り出す --%>
@@ -55,7 +55,7 @@
 
                                  <%--Delete_flag()が0であれば、/showへのリンクを表示 --%>
                                 <c:otherwise>
-                                    <a href="<c:url value='/employees/show?id=${followChk.emp.id}' />">詳細を表示</a>
+                                    <a href="<c:url value='/all_employees/show?id=${followChk.emp.id}' />">詳細を表示</a>
                                 </c:otherwise>
                             </c:choose>
                         </td>
