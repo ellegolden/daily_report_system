@@ -1,4 +1,4 @@
-package controllers.employees_all;
+package controllers.all_employees;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,14 +20,14 @@ import utils.DBUtil;
 /**
  * Servlet implementation class EmployeeAllIndexServlet
  */
-@WebServlet("/employees_all/index")
-public class EmployeeAllIndexServlet extends HttpServlet {
+@WebServlet("/all_employees/index")
+public class AllEmployeeIndexServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EmployeeAllIndexServlet() {
+    public AllEmployeeIndexServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -66,23 +66,26 @@ public class EmployeeAllIndexServlet extends HttpServlet {
 
         em.close();
 
-        //フォローのチェック
+        // フォローのチェック
         List<FollowChk> followChks = new ArrayList<FollowChk>();
 
+        // 拡張For文でemployeeの中身に一つずつ処理を行い、フォローされてい場合、
+        // フォローされているという情報を新たに付加し、eに格納していく
         for(Employee e: employees) {
-            FollowChk fc = new FollowChk();
-            fc.setEmp(e);
+            FollowChk fc = new FollowChk();     // フォローチェック用の新しいインスタンスfcを用意
+            fc.setEmp(e);   // インスタンスにemployeesの中身を一つセット
 
-            for(FollowFollower ff: follow_check_flag) {
-                if(e.getId() == ff.getFollow_employee().getId()) {
-                    fc.setChk(true);
-                    break;
+            for(FollowFollower ff: follow_check_flag) {     // follow_check_flagで拾ったフォロー情報を1件取得取り出す
+
+                if(e.getId() == ff.getFollow_employee().getId()) {      // フォローしているIDと同一のIDをeから探し
+                    fc.setChk(true);                                    // 一致したIDにフォロー情報を付加する
+                    break;          // 情報を付加したらfor文(内側)を抜け出す
                 }
             }
-            followChks.add(fc);
+            followChks.add(fc);     // フォローチェックの処理が終わったらfcに値をセットする
         }
 
-        request.setAttribute("followChks", followChks);     // リスト(employees)の内容をリクエストスコープ"employees"にセット
+        request.setAttribute("followChks", followChks);     // フォローチェックを終えたリスト(followChks)の内容をリクエストスコープ"followChks"にセット
         request.setAttribute("employees_count", employees_count);     // カウントした全件数の数をリクエストスコープ"employees_count"にセット
         request.setAttribute("page", page);
         request.setAttribute("_token", request.getSession().getId());
@@ -94,7 +97,7 @@ public class EmployeeAllIndexServlet extends HttpServlet {
             request.getSession().removeAttribute("flush");
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees_all/index.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/all_employees/index.jsp");
         rd.forward(request, response);
     }
 

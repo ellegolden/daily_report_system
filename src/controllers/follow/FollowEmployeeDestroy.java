@@ -52,7 +52,7 @@ public class FollowEmployeeDestroy extends HttpServlet {
 
             request.getSession().setAttribute("flush", "フォローを解除しました。");
 
-            response.sendRedirect(request.getContextPath() + "/employees_all/index");
+            response.sendRedirect(request.getContextPath() + "/all_employees/index");
         }
     }
 }

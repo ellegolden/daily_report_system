@@ -58,7 +58,7 @@ public class FollowEmployeeCreate extends HttpServlet {
 
             request.getSession().setAttribute("flush", "フォローしました。");
 
-            response.sendRedirect(request.getContextPath() + "/employees_all/index");
+            response.sendRedirect(request.getContextPath() + "/all_employees/index");
         }
 
     }

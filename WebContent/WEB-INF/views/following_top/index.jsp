@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%-- topPage/index.jsp --%>
+<%-- following_top/index.jsp --%>
 
 <c:import url="../layout/app.jsp">
     <c:param name="content">
@@ -12,7 +12,7 @@
             </div>
         </c:if>
         <h2>日報管理システムへようこそ</h2>
-        <h3>【自分の日報 一覧】</h3>
+        <h3><c:out value="【 ${emp.name}さん の日報 一覧】" /></h3>
         <table id="report_list">    <%-- table名 report_list --%>
             <tbody>
                 <tr>
@@ -49,12 +49,11 @@
                     </c:when>
                 <%-- 各ページにリンクを指定 --%>
                     <c:otherwise>
-                        <a href="<c:url value='/?page=${i}' />"><c:out value="${i}" /></a>&nbsp;
+                        <a href="<c:url value='/following_top/index?page=${i}&id=${emp.id}' />"><c:out value="${i}" /></a>&nbsp;
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
         </div>
-        <p><a href="<c:url value='/reports/new' />">新規日報の登録</a></p>
 
     </c:param>
 </c:import>

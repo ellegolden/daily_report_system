@@ -19,13 +19,13 @@
                   -- admin_flagが1(管理者の場合) のみ従業員管理のリンクを表示する --%>
                 <c:if test="${sessionScope.login_employee != null}">
                     <c:if test="${sessionScope.login_employee.admin_flag == 1}">
-                        <a href="<c:url value='/employees/index' />">従業員管理</a>&nbsp;
+                        <a href="<c:url value='/employees/index' />">従業員管理</a>&nbsp;&nbsp;&nbsp;
                     </c:if>
-                    <a href="<c:url value='/reports/index' />">日報管理</a>&nbsp;
+                    &nbsp;&nbsp;&nbsp;<a href="<c:url value='/reports/index' />">日報管理</a>&nbsp;
 
                     <%-- ログイン中にheaderに社員一覧のリンクを表示 --%>
-                    <div id=employees_all>
-                        <a href="<c:url value='/employees_all/index' />">社員一覧</a>&nbsp;
+                    <div id=all_employees>
+                        <a href="<c:url value='/all_employees/index' />">社員一覧</a>&nbsp;
                     </div>
                     <%-- ログイン中にheaderにフォロー中の社員のリンクを表示 --%>
                     <div id="follow_all">
